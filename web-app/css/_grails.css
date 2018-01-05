@@ -1,0 +1,41 @@
+@CHARSET "UTF-8";
+.submit-button{
+	color:graytext;
+	background-color:#abbf78;
+	margin-right:5px;
+	margin-bottom:5px;
+	border-style:solid;
+	border-color:orange; 
+	border-radius:4px;
+}
+
+.max-lines {
+  display: block; 
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-width: 400px;
+}
+
+.search-textfield{
+	border-style:solid;
+	border-color:orange; 
+	border-radius:4px;
+}
+
+.areaSize{
+width: 40%;
+resize :both;
+max-height :300px;
+min-height :200px;
+max-height: 250px;
+min-height: 100px;
+max-width :300px;
+max-width: 250px;
+}
+
+.link{
+	margin-right:290px;
+	text-decoration:none
+}
+
