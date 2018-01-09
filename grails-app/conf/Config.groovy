@@ -87,6 +87,10 @@ grails.hibernate.pass.readonly = false
 // configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
 grails.hibernate.osiv.readonly = false
 
+// These are set to ensure that an empty string isn't trimmed and converted to null
+grails.databinding.trimStrings = false
+grails.databinding.convertEmptyStringsToNull = false
+
 environments {
     development {
         grails.logging.jul.usebridge = true

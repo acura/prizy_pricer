@@ -13,8 +13,6 @@ class PriceControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
 		//params[price:4, product.id:xxxxxxxxxxx, product:[id:xxxxxxxxxxx], create:Create, controller:price, format:null, action:save]
 		params["price"] = new BigDecimal("1111.11")
 		params["product.id"] = "xxxxxxxxxxx"

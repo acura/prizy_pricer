@@ -23,9 +23,7 @@ class ProductControllerSpec extends Specification{
 	
     def populateValidParams(params) {
         assert params != null
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
-		//params______________[create:Create, barcode:ssssssssssssss, productName:ssssss, productDescription:ssssssssssss, controller:product, format:null, action:save]
+		//params[create:Create, barcode:ssssssssssssss, productName:ssssss, productDescription:ssssssssssss, controller:product, format:null, action:save]
 		params["barcode"] = "abcdefghijklmn"
 		params["id"] = "abcdefghijklmn"
 		params["productName"] = "i-phone"

@@ -8,6 +8,7 @@ class Price implements Serializable {
 
 	BigDecimal price;
 	static belongsTo = [product:Product]
+	
 	static mapping = {
 		table 'price'
 		version:false
@@ -15,7 +16,7 @@ class Price implements Serializable {
 	}
 	static constraints = {
 		price nullable:false,scale:2
-		price(min:new BigDecimal(0.0),max:new BigDecimal(99999999.99))
+		price(min:BigDecimal.ZERO,max:new BigDecimal("99999999.99"))
 	}
 
 

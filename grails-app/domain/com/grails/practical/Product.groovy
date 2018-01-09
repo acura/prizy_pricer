@@ -16,7 +16,7 @@ class Product implements Serializable{
 	}
 
 	static constraints = {
-		barcode blank:false ,nullable:false, unique:true,size:8..20
+		barcode blank:false ,nullable:false, unique:true,size:8..20,matches: '^[a-zA-Z0-9]{4,50}$'
 		productName blank: false,nullable:false,size:2..100
 		productDescription widget:'textarea', blank: false,nullable:false,size:2..1000
 	}

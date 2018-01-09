@@ -1,14 +1,18 @@
 
 package com.grails.practical.test
 
+import java.math.RoundingMode;
 import java.security.DomainCombiner;
+
+import spock.lang.Specification
+import spock.lang.Unroll;
 
 import com.grails.practical.Price;
 
 import grails.test.mixin.TestFor;
 import grails.test.mixin.TestMixin
 import grails.test.mixin.support.GrailsUnitTestMixin
-import spock.lang.Specification
+
 
 /**
  * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions
@@ -16,39 +20,39 @@ import spock.lang.Specification
 @TestMixin(GrailsUnitTestMixin)
 @TestFor(Price)
 class PriceSpec extends Specification {
-
-    def setup() {
-    }
-
-    def cleanup() {
-    }
-
-    void "test price not null"() {
-		when:
-		domain.price = null
 	
-		then:
-		!domain.validate(['price'])
-    }
-	
-	
-	
-	
-	void "test price is not less than 0.0"(){
-		when:
-		domain.price < new BigDecimal(0.0)
-		
-		then:
-		!domain.validate(['price'])
-		
+	void "price should have min/max/nullable/scale constraints"() {
+		expect:
+		Price.constraints.price.getAppliedConstraint('min').parameter.compareTo(BigDecimal.ZERO) == 0
+		Price.constraints.price.getAppliedConstraint('max').parameter.compareTo(new BigDecimal("99999999.99")) == 0
+		! Price.constraints.price.getAppliedConstraint('nullable').nullable
+		2 == Price.constraints.price.getAppliedConstraint('scale').parameter
 	}
-	
-	void "test price is not greater 99999999.99"(){
+
+	@Unroll
+	void "test all constraints on price" (error, field, val) {
 		when:
-		domain.price > new BigDecimal(99999999.99)
-		
+		mockForConstraintsTests(Price, [new Price()])
+		def obj = new Price("$field": val)
+
 		then:
-		!domain.validate(['price'])
-		
+		validateConstraints(obj, field, error)
+
+		where:
+		error                  | field                       | val
+		'nullable'             | 'price'  				     | null
+		'min'                  | 'price'  				     | new BigDecimal("-1.00")
+		'max'                  | 'price'  				     | new BigDecimal("10000000000")
+	}
+
+	private void validateConstraints(obj, field, error) {
+		def validated = obj.validate()
+		if (error && error != 'valid') {
+			assert !validated
+			assert obj.errors[field]
+			assert error == obj.errors[field]
+		} else {
+			assert !obj.errors[field]
+		}
 	}
 }
