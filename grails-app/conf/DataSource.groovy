@@ -35,7 +35,7 @@ environments {
     test {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:mysql://localhost:3306/prizy_test?createDatabaseIfNotExist=true"
+            url = "jdbc:mysql://localhost:3306/prizy?createDatabaseIfNotExist=true"
         }
     }
     production {

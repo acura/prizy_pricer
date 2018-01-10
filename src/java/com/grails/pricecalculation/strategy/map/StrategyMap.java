@@ -18,14 +18,14 @@ import com.grails.strategy.SimplePricingStrategy;
 public class StrategyMap {
 
 	public enum STRATEGY {
-		LOWEST,AVEARAGE,HIGHEST,IDEAL,SIMPLE,RETAIL;
+		LOWEST,AVERAGE,HIGHEST,IDEAL,SIMPLE,RETAIL;
 	}
 	Map<STRATEGY, BigDecimal>map = new EnumMap<>(STRATEGY.class);
 	static final Map<STRATEGY, PriceCalculationStrategy> defaultStrategyMap = new EnumMap<>(STRATEGY.class);
 	static final Map<STRATEGY, PriceCalculationStrategy> standardStrategyMap = new EnumMap<>(STRATEGY.class);
 	static{
 		defaultStrategyMap.put(STRATEGY.LOWEST, LowestPricingStrategy.INSTANCE);
-		defaultStrategyMap.put(STRATEGY.AVEARAGE, AveragePricingStrategy.INSTANCE);
+		defaultStrategyMap.put(STRATEGY.AVERAGE, AveragePricingStrategy.INSTANCE);
 		defaultStrategyMap.put(STRATEGY.HIGHEST, HighestPricingStrategy.INSTANCE);
 		standardStrategyMap.put(STRATEGY.IDEAL, IdealPricingStrategy.INSTANCE);
 		standardStrategyMap.put(STRATEGY.SIMPLE, SimplePricingStrategy.INSTANCE);

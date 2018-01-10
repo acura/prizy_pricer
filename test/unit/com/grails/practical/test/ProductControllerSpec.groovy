@@ -1,4 +1,5 @@
 
+
 package com.grails.practical.test
 
 import grails.test.mixin.TestFor;
@@ -11,119 +12,252 @@ import com.grails.practical.ProductController;
 import prizy_pricer.PriceService
 import prizy_pricer.ProductService;
 import spock.lang.Specification
+import spock.lang.Unroll;
 
 @TestFor(ProductController)
 @grails.test.mixin.Mock([Product,ProductService,Price,PriceService])
 class ProductControllerSpec extends Specification{
-	
+
+	Product product
+
 	static doWithSpring = {
 		productService ProductService
 		priceService PriceService
 	}
-	
-    def populateValidParams(params) {
-        assert params != null
-		//params[create:Create, barcode:ssssssssssssss, productName:ssssss, productDescription:ssssssssssss, controller:product, format:null, action:save]
-		params["barcode"] = "abcdefghijklmn"
-		params["id"] = "abcdefghijklmn"
-		params["productName"] = "i-phone"
-		params["productDescription"] = "32 GB"
-		params["strategy"] = "Retail"
-		 }
 
-    void "Test the index action returns the correct model"() {
-	
-        when:"The index action is executed"
-            controller.index()
-
-        then:"The model is correct"
-            !model.productInstanceList
-            model.productInstanceCount1 == 0
-    }
-
-    void "Test the create action returns the correct model"() {
-        when:"The create action is executed"
-            controller.create()
-
-        then:"The model is correctly created"
-            model.productInstance!= null
-    }
-	
-	void "Test the price calculation is correct for strategy"() {
-		when:"The create action is executed"
-			controller.calculateForStandardStrategy()
-
-		then:"The model is correctly created"
-			model.price!= null
+	def populateValidParams(params) {
+		assert params != null
 	}
 
-    void "Test the save action correctly persists an instance"() {
+	def setup(){
+		product = new Product("MTG20160417AND14","Moto G2","Octa Core, 1.6 GHz Processor 4 GB RAM, 32 GB inbuilt 3000 mAh Battery")
+		product.save flush:true
+		new Product("XXX20160417AND155","Moto G2","Octa Core, 1.6 GHz Processor 4 GB RAM, 32 GB inbuilt 3000 mAh Battery").save flush:true
+		for(int index =0 ;index < 7;index++){
+			def price = new Price(price:new BigDecimal(index),product:product)
+			price.save flush:true
+		}
+		return Product.get("MTG20160417AND14")
+	}
+
+	void "Test the index action returns the correct model"() {
+
+		given:
+		params["max"] = 10
+
+		when:"The index action is executed for empty product list"
+		controller.index()
+
+		then:"The model is correct"
+		model.productInstanceCount1 == 2
+	}
+
+	void "Test the create action returns the correct model"() {
+
+		when:"The create action is executed"
+		controller.create()
+
+		then:"The model is correctly created"
+		model.productInstance!= null
+	}
+
+	void "Test the filter action serches the correct product"() {
 		
-        when:"The save action is executed with an invalid instance"
-            request.contentType = FORM_CONTENT_TYPE
-            request.method = 'POST'
-            def product = new Product()
-            product.validate()
-            controller.save(product)
+		when:
+		params["id"] ="MTG"
+		params["value"] ="MTG"
+		controller.filter(10)
 
-        then:"The create view is rendered again with the correct model"
-            model.productInstance!= null
-            view == 'create'
+		then:"The model is correctly created"
+		response.text.trim().contains("MTG20160417AND14")
+		
+		when:
+		params["id"] ="x"
+		params["value"] ="x"
+		controller.filter(10)
 
-        when:"The save action is executed with a valid instance"
-            response.reset()
-            populateValidParams(params)
-            product = new Product(params)
+		then:"The model is correctly created"
+		response.text.trim().contains("XXX20160417AND155")
+	}
 
-            controller.save(product)
+	@Unroll
+	void "Test the price calculation is correct for standard strategies"() {
+		given:
+		params.id = id_value
+		params.strategy = strategy
 
-        then:"A redirect is issued to the show action"
-            response.redirectedUrl == '/product/show/abcdefghijklmn'
-            controller.flash.message != null
-            Product.count() == 1
-    }
+		when:
 
-    void "Test that the show action returns the correct model"() {
-        when:"The show action is executed with a null domain"
-            controller.show(null)
+		controller.calculateForStandardStrategy()
 
-        then:"A 404 error is returned"
-            response.status == 404
+		then:
+		response.text.trim().contains(amount)
 
-        when:"A domain instance is passed to the show action"
-            populateValidParams(params)
-            def product = new Product(params)
-            controller.show(product)
+		where:
+		id_value        	|  strategy  |   	amount
+		'MTG20160417AND14'	|  'Ideal'	 |      "3.60"
+		'MTG20160417AND14'	|  'Retail'	 |      "5.00"
+		'MTG20160417AND14'	|  'Simple'	 |      "3.60"
+	}
 
-        then:"A model is populated containing the domain instance"
-            model.productInstance == product
-    }
 
-   
-    void "Test that the delete action deletes an instance if it exists"() {
-        when:"The delete action is called for a null instance"
-            request.contentType = FORM_CONTENT_TYPE
-            request.method = 'DELETE'
-            controller.delete(null)
+	@Unroll
+	void "Test the price calculation is correct for standard strategies when price count is less than 5"() {
+		given:
+		product = new Product("MTG20160417AND147","Moto G2","Octa Core, 1.6 GHz Processor 4 GB RAM, 32 GB inbuilt 3000 mAh Battery")
+		product.save flush:true
+		for(int index =0 ;index < 4;index++){
+			def price = new Price(price:new BigDecimal(index),product:product)
+			price.save flush:true
+		}
+		params.id = id_value
+		params.strategy = strategy
 
-        then:"A 404 is returned"
-            response.redirectedUrl == '/product/index'
-            flash.message != null
+		when:
+		controller.calculateForStandardStrategy()
 
-        when:"A domain instance is created"
-            response.reset()
-            populateValidParams(params)
-            def product = new Product(params).save(flush: true)
+		then:
+		response.text.trim().contains(amount)
 
-        then:"It exists"
-            Product.count() == 1
+		where:
+		id_value        	|  strategy  |   	amount
+		'MTG20160417AND147'	|  'Ideal'	 |      "Provide minimum 5 prices to calculate ideal price"
+		'MTG20160417AND147'	|  'Retail'	 |      "3.00"
+		'MTG20160417AND147'	|  'Simple'	 |      "1.80"
+	}
 
-        when:"The domain instance is passed to the delete action"
-            controller.delete(product)
+	@Unroll
+	void "Test the price calculation is correct for standard strategies when price count is 5"() {
+		given:
+		product = new Product("MTG20160417AND148","Moto G2","Octa Core, 1.6 GHz Processor 4 GB RAM, 32 GB inbuilt 3000 mAh Battery")
+		product.save flush:true
+		for(int index =0 ;index < 5;index++){
+			def price = new Price(price:new BigDecimal(index),product:product)
+			price.save flush:true
+		}
+		params.id = id_value
+		params.strategy = strategy
 
-        then:"The instance is deleted"
-            Product.count() == 0
-            response.redirectedUrl == '/product/index'
-            flash.message != null
-    }
+		when:
+		controller.calculateForStandardStrategy()
+
+		then:
+		response.text.trim().contains(amount)
+
+		where:
+		id_value        	|  strategy  |   	amount
+		'MTG20160417AND148'	|  'Ideal'	 |      "2.40"
+		'MTG20160417AND148'	|  'Retail'	 |      "4.00"
+		'MTG20160417AND148'	|  'Simple'	 |      "2.40"
+	}
+
+	@Unroll
+	void "Test the price calculation is correct for standard strategies when price count is 0"() {
+		given:
+		product = new Product("MTG20160417AND149","Moto G2","Octa Core, 1.6 GHz Processor 4 GB RAM, 32 GB inbuilt 3000 mAh Battery")
+		product.save flush:true
+		params.id = id_value
+		params.strategy = strategy
+
+		when:
+		controller.calculateForStandardStrategy()
+
+		then:
+		response.text.trim().contains(amount)
+
+		where:
+		id_value        	|  strategy  |   	amount
+		'MTG20160417AND149'	|  'Ideal'	 |      "Provide minimum 5 prices to calculate ideal price"
+		'MTG20160417AND149'	|  'Retail'	 |      "Add some prices for price calculation"
+		'MTG20160417AND149'	|  'Simple'	 |      "Add some prices for price calculation"
+	}
+
+	@Unroll
+	void "Test the price calculation is correct for default strategies"() {
+		given:
+		params.id = id_value
+
+		when:
+		def map = controller.calculateForDefaultStrategies()
+
+		then:
+		map.get(strategy).toString() == amount
+
+		where:
+		id_value        	|  strategy  |      amount
+		'MTG20160417AND14'	|  'Lowest'	 |      "0.00"
+		'MTG20160417AND14'	|  'Average' |      "3.00"
+		'MTG20160417AND14'	|  'Highest' |      "6.00"
+	}
+
+	void "Test the save action correctly persists an instance"() {
+
+		when:"The save action is executed with an invalid instance"
+		request.contentType = FORM_CONTENT_TYPE
+		request.method = 'POST'
+		def product = new Product()
+		product.validate()
+		controller.save(product)
+
+		then:"The create view is rendered again with the correct model"
+		model.productInstance!= null
+		view == 'create'
+
+		when:"The save action is executed with a valid instance"
+		response.reset()
+		controller.save(setup())
+
+		then:"A redirect is issued to the show action"
+		response.redirectedUrl == '/product/show/MTG20160417AND14'
+		controller.flash.message != null
+		Product.count() == 2
+	}
+
+	void "Test that the show action returns the correct model"() {
+		when:"The show action is executed with a null domain"
+		controller.show(null)
+
+		then:"A 404 error is returned"
+		response.status == 404
+
+		when:"A domain instance is passed to the show action"
+		def product = setup()
+		controller.show(product)
+
+		then:"A model is populated containing the domain instance"
+		model.productInstance == product
+	}
+
+
+	void "Test that the delete action deletes an instance if it exists"() {
+		given:
+		ProductService productService = Mock()
+		def product1 = new Product("MTG20160417AND146","Moto G2","Octa Core, 1.6 GHz Processor 4 GB RAM, 32 GB inbuilt 3000 mAh Battery")
+
+		when:"The delete action is called for a null instance"
+		request.contentType = FORM_CONTENT_TYPE
+		request.method = 'DELETE'
+		params['barcode'] = null
+		controller.delete(null)
+
+		then:"A 404 is returned"
+		response.redirectedUrl == '/product/index'
+		flash.message != null
+
+		when:"A domain instance is created"
+		response.reset()
+		product1.save(flush: true)
+
+		then:"It exists"
+		Product.count() == 3
+
+		when:"The domain instance is passed to the delete action"
+		params['barcode'] = product1.getBarcode()
+		controller.delete(product1)
+
+		then:"The instance is deleted"
+		Product.count() == 2
+		response.redirectedUrl == '/product/index'
+		flash.message != null
+	}
 }

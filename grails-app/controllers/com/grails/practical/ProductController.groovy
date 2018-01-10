@@ -69,7 +69,6 @@ class ProductController {
 	}
 
 	def calculateForStandardStrategy(){
-		println "XXXXXXXXXXXXXXXXXX" + params
 		def price = productService.calculateForStandardStrategy(params.id,params.strategy)
 
 		if(BigDecimal.ZERO.compareTo(price) == 0 && "Ideal".equals(params.strategy)) {
@@ -98,7 +97,6 @@ class ProductController {
 
 	def delete(Product product) {
 		Product productInstance = Product.get(params.barcode)
-		println params.barcode
 		if (productInstance == null) {
 			notFound()
 			return
@@ -137,10 +135,13 @@ class ProductController {
 		params.max = Math.min(max ?: 10, 100)
 		def productList = Product.list()
 		int list_count
+		println params.id
+		println params.value
 		if(null !=params.id){
 			params.value=params.id
 			def searchString = params.value.toUpperCase()
 			productList=Product.findAllByBarcodeLike(searchString+'%', params)
+			println productList
 			list_count = productService.getProductCountForSearch(searchString)
 			render(template: "/template/list", model:[productInstanceList: productList,productInstanceCount1: list_count,value:params.value,search:params.id])
 		}else if ( "" == params.value || null ==  params.value) {

@@ -47,7 +47,6 @@ class PriceController {
 		}*/
 
 
-		println "params" + params
         priceInstance.save flush:true
 
         request.withFormat {

@@ -14,7 +14,7 @@ public enum IdealPricingStrategy implements PriceCalculationStrategy {
 	public BigDecimal calculatePrice(List<BigDecimal> priceList) {
 		if (priceList.size() < 5)
 			return BigDecimal.ZERO;
-
+		
 		Collections.sort(priceList);
 		BigDecimal average = AveragePricingStrategy.INSTANCE
 							.calculatePrice(priceList.subList(2, priceList.size() - 2));

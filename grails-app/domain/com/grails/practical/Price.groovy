@@ -24,6 +24,11 @@ class Price implements Serializable {
 		this.price = price;
 	}
 	
+	public Price(BigDecimal price,Product product) {
+		this.price = price;
+		this.product = product;
+	}
+	
 	
 	@Override
 	public String toString() {

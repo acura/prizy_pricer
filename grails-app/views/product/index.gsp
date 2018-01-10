@@ -37,8 +37,7 @@
 					<< Previous page</g:link>
 		   				Search Barcode:<g:remoteField action="filter"
 				controller="Product" update="list-product" name="search"
-				placeholder="Serach By Barcode" value="${search}" />
-			<g:submitButton name="submit" value="Search" class="submit-button" />
+				placeholder="Serach By Barcode"/>
 		</g:form>
 	</div>
 
@@ -56,6 +55,16 @@
 			<g:render template="/template/list" />
 		</div>
 	</div>
+	<g:javascript>
+	$(document).ready(function() {
+ 		 $(window).keydown(function(event){
+		    if(event.keyCode == 13) {
+		      event.preventDefault();
+		      return false;
+   		 }
+  		});
+	});
+	</g:javascript>
 </body>
 
 </html>
