@@ -1,4 +1,4 @@
-package prizy_pricer
+package com.grails.practical.service
 
 import java.util.ArrayList;
 import java.util.EnumMap;

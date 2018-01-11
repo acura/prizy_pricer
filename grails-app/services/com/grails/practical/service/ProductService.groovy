@@ -1,4 +1,4 @@
-package prizy_pricer
+package com.grails.practical.service
 
 import com.grails.practical.Product
 import com.grails.pricecalculation.strategy.map.StrategyMap
@@ -30,6 +30,7 @@ class ProductService {
 	
 	
 	def calculateForStandardStrategy(String barcode,String strategy){
+		println priceService.getPriceList(barcode)
 		def price = strategyMapInstance.calculateForStandardStrategy(priceService.getPriceList(barcode),strategy.toUpperCase())
 		return price
 		}

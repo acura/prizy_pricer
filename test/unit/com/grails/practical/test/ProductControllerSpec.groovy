@@ -1,5 +1,7 @@
 
 
+
+
 package com.grails.practical.test
 
 import grails.test.mixin.TestFor;
@@ -8,9 +10,9 @@ import groovy.transform.builder.Builder;
 import com.grails.practical.Price;
 import com.grails.practical.Product;
 import com.grails.practical.ProductController;
+import com.grails.practical.service.PriceService;
+import com.grails.practical.service.ProductService;
 
-import prizy_pricer.PriceService
-import prizy_pricer.ProductService;
 import spock.lang.Specification
 import spock.lang.Unroll;
 
@@ -37,7 +39,6 @@ class ProductControllerSpec extends Specification{
 			def price = new Price(price:new BigDecimal(index),product:product)
 			price.save flush:true
 		}
-		return Product.get("MTG20160417AND14")
 	}
 
 	void "Test the index action returns the correct model"() {
@@ -189,6 +190,26 @@ class ProductControllerSpec extends Specification{
 		'MTG20160417AND14'	|  'Average' |      "3.00"
 		'MTG20160417AND14'	|  'Highest' |      "6.00"
 	}
+	
+	@Unroll
+	void "Test the price calculation is correct for default strategies when price count is 0"() {
+		given:
+		product = new Product("MTG20160417AND141","Moto G2","Octa Core, 1.6 GHz Processor 4 GB RAM, 32 GB inbuilt 3000 mAh Battery")
+		product.save flush:true
+		params.id = id_value
+		
+		when:
+		def map = controller.calculateForDefaultStrategies()
+
+		then:
+		map.get(strategy).compareTo(new BigDecimal(amount)) == 0
+
+		where:
+		id_value        	|  strategy  |      amount
+		'MTG20160417AND141'	|  'Lowest'	 |      "0.00"
+		'MTG20160417AND141'	|  'Average' |      "0.00"
+		'MTG20160417AND141'	|  'Highest' |      "0.00"
+	}
 
 	void "Test the save action correctly persists an instance"() {
 
@@ -205,7 +226,7 @@ class ProductControllerSpec extends Specification{
 
 		when:"The save action is executed with a valid instance"
 		response.reset()
-		controller.save(setup())
+		controller.save(this.product)
 
 		then:"A redirect is issued to the show action"
 		response.redirectedUrl == '/product/show/MTG20160417AND14'
@@ -221,7 +242,6 @@ class ProductControllerSpec extends Specification{
 		response.status == 404
 
 		when:"A domain instance is passed to the show action"
-		def product = setup()
 		controller.show(product)
 
 		then:"A model is populated containing the domain instance"
@@ -231,7 +251,6 @@ class ProductControllerSpec extends Specification{
 
 	void "Test that the delete action deletes an instance if it exists"() {
 		given:
-		ProductService productService = Mock()
 		def product1 = new Product("MTG20160417AND146","Moto G2","Octa Core, 1.6 GHz Processor 4 GB RAM, 32 GB inbuilt 3000 mAh Battery")
 
 		when:"The delete action is called for a null instance"
