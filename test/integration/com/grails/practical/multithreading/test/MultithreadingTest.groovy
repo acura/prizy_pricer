@@ -27,7 +27,7 @@ import groovy.mock.interceptor.MockFor;
 class MultithreadingTest extends IntegrationSpec {
 	def price
 	def product
-	static def resultingAmount1,resultingAmount2,resultingAmount3,resultingAmount4,resultingAmount5,resultingAmount6
+	static def idealPrice1,idealPrice2,retailPrice1,retailPrice2,simplePrice1,simplePrice2
 
 	def setup() {
 		product = new Product("MTG20160417AND14777","Moto G2","Octa Core, 1.6 GHz Processor 4 GB RAM, 32 GB inbuilt 3000 mAh Battery")
@@ -46,51 +46,45 @@ class MultithreadingTest extends IntegrationSpec {
 		Thread t1 = new Thread(){
 					@Override
 					public void run() {
-						resultingAmount1 = service.calculateForStandardStrategy(product.getBarcode(),"Ideal")
-						println "resultingAmount1 Ideal" + resultingAmount1
+						idealPrice1 = service.calculateForStandardStrategy(product.getBarcode(),"Ideal")
 					};
 				}.start().sleep(1000);
 
 		Thread t2 = new Thread(){
 					@Override
 					void run() {
-						resultingAmount2 = service.calculateForStandardStrategy(product.getBarcode(),"Retail")
-						println "resultingAmount2 Retail" + resultingAmount2
+						retailPrice1 = service.calculateForStandardStrategy(product.getBarcode(),"Retail")
 					};
 				}.start().sleep(1000);
 		Thread t3 = new Thread(){
 					void run() {
-						resultingAmount3 = service.calculateForStandardStrategy(product.getBarcode(),"Simple")
-						println "resultingAmount3 Simple" + resultingAmount3
+						simplePrice1 = service.calculateForStandardStrategy(product.getBarcode(),"Simple")
 					};
 				}.start().sleep(1000);
 		Thread t4 = new Thread(){
 					void run() {
-						resultingAmount4 = service.calculateForStandardStrategy(product.getBarcode(),"Retail")
-						println "resultingAmount4 Retail" + resultingAmount4
+						retailPrice2 = service.calculateForStandardStrategy(product.getBarcode(),"Retail")
 					};
 				}.start().sleep(1000);
 		Thread t5 = new Thread(){
 					void run() {
-						resultingAmount5 = service.calculateForStandardStrategy(product.getBarcode(),"Simple")
-						println "resultingAmount5 Simple" + resultingAmount5
+						simplePrice2 = service.calculateForStandardStrategy(product.getBarcode(),"Simple")
 					};
 				}.start().sleep(1000);
 		Thread t6 = new Thread(){
 					void run() {
-						resultingAmount6 = service.calculateForStandardStrategy(product.getBarcode(),"Ideal")
-						println "resultingAmount6 Ideal" + resultingAmount6
+						idealPrice2 = service.calculateForStandardStrategy(product.getBarcode(),"Ideal")
 					};
 				}.start().sleep(1000);
 
 
 		expect:
-		resultingAmount1.compareTo(resultingAmount6) == 0
-		resultingAmount2.compareTo(resultingAmount4) == 0
-		resultingAmount3.compareTo(resultingAmount5) == 0
-		resultingAmount1.compareTo(resultingAmount2) == -1 || resultingAmount1.compareTo(resultingAmount6) == 1
-		resultingAmount1.compareTo(resultingAmount3) == -1 || resultingAmount1.compareTo(resultingAmount3) == 1
-		resultingAmount2.compareTo(resultingAmount3) == -1 || resultingAmount2.compareTo(resultingAmount3) == 1
+		idealPrice1.compareTo(idealPrice2) == 0
+		retailPrice1.compareTo(retailPrice2) == 0
+		simplePrice1.compareTo(simplePrice2) == 0
+		idealPrice1.compareTo(retailPrice1) == -1 || idealPrice1.compareTo(retailPrice1) == 1
+		idealPrice1.compareTo(simplePrice1) == -1 || idealPrice1.compareTo(simplePrice1) == 1
+		retailPrice1.compareTo(simplePrice1) == -1 || retailPrice1.compareTo(simplePrice1) == 1
 	}
 	
 }
