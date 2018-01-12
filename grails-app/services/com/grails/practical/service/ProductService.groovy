@@ -30,7 +30,6 @@ class ProductService {
 	
 	
 	def calculateForStandardStrategy(String barcode,String strategy){
-		println priceService.getPriceList(barcode)
 		def price = strategyMapInstance.calculateForStandardStrategy(priceService.getPriceList(barcode),strategy.toUpperCase())
 		return price
 		}

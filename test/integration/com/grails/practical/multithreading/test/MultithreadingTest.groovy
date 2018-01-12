@@ -1,6 +1,9 @@
 
 package com.grails.practical.multithreading.test
 
+import org.junit.Test;
+import org.springframework.test.annotation.Rollback;
+
 import spock.lang.Specification;
 
 import com.grails.practical.Price;
@@ -11,21 +14,23 @@ import com.sun.xml.internal.ws.wsdl.writer.document.Service;
 
 import grails.test.mixin.Mock;
 import grails.test.mixin.TestFor;
+import grails.test.mixin.TestMixin;
+import grails.test.mixin.integration.Integration;
 import grails.test.mixin.support.GrailsUnitTestMixin;
+import grails.test.spock.IntegrationSpec;
 import groovy.mock.interceptor.MockFor;
 
 
 @TestFor(ProductService)
-@grails.test.mixin.Mock([Product,Price,PriceService,ProductService])
-class MultithreadingTest extends GroovyTestCase{
-	Price price
-	Product product
-	ProductService service
-	BigDecimal resultingAmount1,resultingAmount2,resultingAmount3,resultingAmount4,resultingAmount5,resultingAmount6;
+@Mock([PriceService,Price,Product])
+@TestMixin(GrailsUnitTestMixin)
+class MultithreadingTest extends IntegrationSpec {
+	def price
+	def product
+	static def resultingAmount1,resultingAmount2,resultingAmount3,resultingAmount4,resultingAmount5,resultingAmount6
 
 	def setup() {
-		service = [service: { Product p -> product }] as ProductService
-		product = new Product("MTG20160417AND14","Moto G2","Octa Core, 1.6 GHz Processor 4 GB RAM, 32 GB inbuilt 3000 mAh Battery")
+		product = new Product("MTG20160417AND14777","Moto G2","Octa Core, 1.6 GHz Processor 4 GB RAM, 32 GB inbuilt 3000 mAh Battery")
 		product.save flush:true
 		for(int index =100 ;index < 1000;index++){
 			price = new Price(price:new BigDecimal(index),product:product)
@@ -33,71 +38,59 @@ class MultithreadingTest extends GroovyTestCase{
 		}
 	}
 
+
 	void "Test the price calculation is correct when multiple thread access the same product and price"(){
 
-		when:
-		Runnable r1 = new Runnable(){
-					void run() {
-						resultingAmount1 = service.calculateForStandardStrategy(product.getBarcode(),"Ideal")
-						println resultingAmount1
-					};
-				}
+		given:
 
-		/*Runnable r2 = new Runnable(){
+		Thread t1 = new Thread(){
+					@Override
+					public void run() {
+						resultingAmount1 = service.calculateForStandardStrategy(product.getBarcode(),"Ideal")
+						println "resultingAmount1 Ideal" + resultingAmount1
+					};
+				}.start().sleep(1000);
+
+		Thread t2 = new Thread(){
+					@Override
 					void run() {
 						resultingAmount2 = service.calculateForStandardStrategy(product.getBarcode(),"Retail")
-						println resultingAmount2
+						println "resultingAmount2 Retail" + resultingAmount2
 					};
-				}
-
-		Runnable r3 = new Runnable(){
+				}.start().sleep(1000);
+		Thread t3 = new Thread(){
 					void run() {
 						resultingAmount3 = service.calculateForStandardStrategy(product.getBarcode(),"Simple")
-						println resultingAmount3
+						println "resultingAmount3 Simple" + resultingAmount3
 					};
-				}
-
-		Runnable r4 = new Runnable(){
+				}.start().sleep(1000);
+		Thread t4 = new Thread(){
 					void run() {
 						resultingAmount4 = service.calculateForStandardStrategy(product.getBarcode(),"Retail")
-						println resultingAmount4
+						println "resultingAmount4 Retail" + resultingAmount4
 					};
-				}
-
-		Runnable r5 = new Runnable(){
+				}.start().sleep(1000);
+		Thread t5 = new Thread(){
 					void run() {
 						resultingAmount5 = service.calculateForStandardStrategy(product.getBarcode(),"Simple")
-						println resultingAmount5
+						println "resultingAmount5 Simple" + resultingAmount5
 					};
-				}
-
-		Runnable r6 = new Runnable(){
+				}.start().sleep(1000);
+		Thread t6 = new Thread(){
 					void run() {
 						resultingAmount6 = service.calculateForStandardStrategy(product.getBarcode(),"Ideal")
-						println resultingAmount6
+						println "resultingAmount6 Ideal" + resultingAmount6
 					};
-				}
-		*/
-		Thread t1=new Thread(r1);
-		t1.start();
-		/*Thread t2=new Thread(r2);
-		t2.start();
-		Thread t3=new Thread(r3);
-		t3.start();
-		Thread t4=new Thread(r4);
-		t4.start();
-		Thread t5=new Thread(r5);
-		t5.start();
-		Thread t6=new Thread(r6);
-		t6.start();*/
-		
-		Thread t = Thread.currentThread();
-		t.sleep(10000);
-		
-		then:
-		true
-		/* resultingAmount1.compareTo(resultingAmount6) == 0
-		 resultingAmount2.compareTo(resultingAmount4) == 0
-		 resultingAmount3.compareTo(resultingAmount5) == 0*/
+				}.start().sleep(1000);
+
+
+		expect:
+		resultingAmount1.compareTo(resultingAmount6) == 0
+		resultingAmount2.compareTo(resultingAmount4) == 0
+		resultingAmount3.compareTo(resultingAmount5) == 0
+		resultingAmount1.compareTo(resultingAmount2) == -1 || resultingAmount1.compareTo(resultingAmount6) == 1
+		resultingAmount1.compareTo(resultingAmount3) == -1 || resultingAmount1.compareTo(resultingAmount3) == 1
+		resultingAmount2.compareTo(resultingAmount3) == -1 || resultingAmount2.compareTo(resultingAmount3) == 1
 	}
+	
 }
