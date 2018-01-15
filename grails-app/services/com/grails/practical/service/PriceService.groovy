@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.grails.practical.Price
 import com.grails.practical.Product
-import com.grails.pricecalculation.strategy.map.StrategyMap;
+import com.grails.pricecalculation.strategy.factory.StrategyFactory;
 import com.grails.strategy.PriceCalculationStrategy;
 import com.sun.org.apache.bcel.internal.generic.LSHL;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
@@ -24,7 +24,7 @@ import grails.transaction.Transactional
 @Transactional
 class PriceService{
 
-	StrategyMap strategyMapInstance = new StrategyMap();
+	private StrategyFactory strategyMapInstance = new StrategyFactory()
 	def Price priceInstance;
 	
 	def getPriceList(String barcode){

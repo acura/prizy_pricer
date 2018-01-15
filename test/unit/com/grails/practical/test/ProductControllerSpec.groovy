@@ -98,7 +98,7 @@ class ProductControllerSpec extends Specification{
 		id_value        	|  strategy  |   	amount
 		'MTG20160417AND14'	|  'Ideal'	 |      "3.60"
 		'MTG20160417AND14'	|  'Retail'	 |      "5.00"
-		'MTG20160417AND14'	|  'Simple'	 |      "3.60"
+		'MTG20160417AND14'	|  'Simple'	 |      "4.20"
 	}
 
 
@@ -124,7 +124,7 @@ class ProductControllerSpec extends Specification{
 		id_value        	|  strategy  |   	amount
 		'MTG20160417AND147'	|  'Ideal'	 |      "Provide minimum 5 prices to calculate ideal price"
 		'MTG20160417AND147'	|  'Retail'	 |      "3.00"
-		'MTG20160417AND147'	|  'Simple'	 |      "1.80"
+		'MTG20160417AND147'	|  'Simple'	 |      "2.10"
 	}
 
 	@Unroll
@@ -149,7 +149,7 @@ class ProductControllerSpec extends Specification{
 		id_value        	|  strategy  |   	amount
 		'MTG20160417AND148'	|  'Ideal'	 |      "2.40"
 		'MTG20160417AND148'	|  'Retail'	 |      "4.00"
-		'MTG20160417AND148'	|  'Simple'	 |      "2.40"
+		'MTG20160417AND148'	|  'Simple'	 |      "2.80"
 	}
 
 	@Unroll

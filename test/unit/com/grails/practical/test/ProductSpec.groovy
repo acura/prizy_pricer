@@ -62,15 +62,28 @@ class ProductSpec extends Specification{
 		where:
 		error                  | field                       | val
 		'blank'            	   | 'barcode'  				 | ''.value
-		'matches'              | 'barcode'  			     | '@@@@@@@@@@@@@'
+		'matches'              | 'barcode'  			     | 'I8350O@IUNLB121'
+		'matches'              | 'barcode'  			     | 'I8350O.IUNLB121'
+		'matches'              | 'barcode'  			     | 'I8350O&IUNLB121'
+		'matches'              | 'barcode'  			     | 'I8350O$IUNLB121'
+		'matches'              | 'barcode'  			     | 'I8350O#IUNLB121'
+		'matches'              | 'barcode'  			     | 'I8350O*IUNLB121'
+		'matches'              | 'barcode'  			     | 'I8350O^IUNLB121'
+		'matches'              | 'barcode'  			     | 'I8350O%IUNLB121'
+		'matches'              | 'barcode'  			     | 'I8350O!IUNLB121'
+		'matches'              | 'barcode'  			     | 'I8350O(IUNLB121'
+		'matches'              | 'barcode'  			     | 'I8350O)IUNLB121'
 		'size'                 | 'barcode'                   | getLongString(21)
+		'size'                 | 'barcode'                   | getLongString(7)
 		'nullable'             | 'barcode'  				 | null
 		'blank'                | 'productName'  			 | ''.value
 		'nullable'             | 'productName'		         | null
 		'size'                 | 'productName'               | getLongString(101)
+		'size'                 | 'productName'               | getLongString(1)
 		'blank'                | 'productDescription'  	     | ''.value
 		'nullable'             | 'productDescription'   	 | null
 		'size'                 | 'productDescription'        | getLongString(1001)
+		'size'                 | 'productDescription'        | getLongString(1)
 		'unique'               | 'barcode'  				 | "I8350OIUNLB121"
 	}
 

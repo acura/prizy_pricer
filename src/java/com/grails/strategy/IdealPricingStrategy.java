@@ -2,8 +2,8 @@ package com.grails.strategy;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public enum IdealPricingStrategy implements PriceCalculationStrategy {
 	INSTANCE;
@@ -12,14 +12,17 @@ public enum IdealPricingStrategy implements PriceCalculationStrategy {
 
 	@Override
 	public BigDecimal calculatePrice(List<BigDecimal> priceList) {
-		if (priceList.size() < 5)
+		if (priceList.isEmpty() || priceList.size() < 5)
 			return BigDecimal.ZERO;
-		
-		Collections.sort(priceList);
+
 		BigDecimal average = AveragePricingStrategy.INSTANCE
-							.calculatePrice(priceList.subList(2, priceList.size() - 2));
-		return average.add(average.multiply(PROFIT_PERCENTAGE))
-					  .setScale(2,RoundingMode.HALF_UP);
+				.calculatePrice(priceList.stream()
+										 .sorted()
+										 .collect(Collectors.toList())
+										 .subList(2, priceList.size() - 2));
+		
+		return average.add(average.multiply(PROFIT_PERCENTAGE)).setScale(2,
+				RoundingMode.HALF_UP);
 
 	}
 }

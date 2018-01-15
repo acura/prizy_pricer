@@ -1,7 +1,5 @@
 package com.grails.practical
 
-
-
 import static org.springframework.http.HttpStatus.*
 
 import org.codehaus.groovy.grails.web.pages.AbstractGroovyPageBinding.BindingMapEntry;

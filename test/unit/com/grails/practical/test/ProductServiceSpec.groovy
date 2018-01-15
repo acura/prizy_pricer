@@ -6,7 +6,6 @@ import com.grails.practical.Price
 import com.grails.practical.Product;
 import com.grails.practical.service.PriceService;
 import com.grails.practical.service.ProductService;
-import com.grails.pricecalculation.strategy.map.StrategyMap.STRATEGY;
 
 import grails.test.mixin.TestFor;
 import grails.test.mixin.TestMixin
@@ -61,7 +60,7 @@ class ProductServiceSpec extends Specification {
 		  strategy   |   	amount
 		  'Ideal'	 |      "3.60"
 		  'Retail'	 |      "5.00"
-		  'Simple'	 |      "3.60"
+		  'Simple'	 |      "4.20"
 	}
 	
 	@Unroll
@@ -103,7 +102,7 @@ class ProductServiceSpec extends Specification {
 		  strategy   |   	amount
 		  'Ideal'	 |      "0.00"
 		  'Retail'	 |      "3.00"
-		  'Simple'	 |      "1.80"
+		  'Simple'	 |      "2.10"
 	}
 	
 	@Unroll
@@ -126,7 +125,7 @@ class ProductServiceSpec extends Specification {
 		  strategy   |   	amount
 		  'Ideal'	 |      "2.40"
 		  'Retail'	 |      "4.00"
-		  'Simple'	 |      "2.40"
+		  'Simple'	 |      "2.80"
 	}
 	
 	@Unroll

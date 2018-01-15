@@ -5,5 +5,4 @@ import java.util.List;
 
 public interface PriceCalculationStrategy {
 	public BigDecimal calculatePrice(List<BigDecimal> priceList);
-
 }

@@ -1,48 +1,53 @@
 package com.grails.practical.service
 
 import com.grails.practical.Product
-import com.grails.pricecalculation.strategy.map.StrategyMap
+import com.grails.pricecalculation.strategy.factory.StrategyFactory;
 
 import grails.transaction.Transactional
 
 @Transactional
 class ProductService {
-	StrategyMap strategyMapInstance = new StrategyMap();
+	private StrategyFactory strategyMapInstance = new StrategyFactory();
 	def priceService
-	
-    def getStandardStrategySet(){
-		def standardStrategySet = strategyMapInstance.getStandardStrategySet()
+
+	def getStandardStrategySet(){
 		def set = new HashSet<String>()
-		standardStrategySet.each {
-			e -> set.add(e.toLowerCase().capitalize())
-		}
+		set.add("Ideal")
+		set.add("Retail")
+		set.add("Simple")
+		return set
+	}
+
+	def getDefaultStrategySet(){
+		def set = new HashSet<String>()
+		set.add("Lowest")
+		set.add("Average")
+		set.add("Highest")
 		return set
 	}
 
 	def calculateForDefaultStrategies(String barcode){
-		def strategyMap = strategyMapInstance.calculateForDefaultStrategies(priceService.getPriceList(barcode))
+		def strategySet = getDefaultStrategySet()
 		def map = new HashMap<String, BigDecimal>()
-		strategyMap.each {
-			key,value -> map.put(String.valueOf(key).toLowerCase().capitalize(), value)
+		strategySet.each { strategy ->
+			map.put(strategy, strategyMapInstance.calculatePrice(priceService.getPriceList(barcode), strategy))
 		}
 		return map
 	}
-	
-	
+
+
 	def calculateForStandardStrategy(String barcode,String strategy){
-		def price = strategyMapInstance.calculateForStandardStrategy(priceService.getPriceList(barcode),strategy.toUpperCase())
+		def price = strategyMapInstance.calculatePrice(priceService.getPriceList(barcode), strategy)
 		return price
-		}
-	
+	}
+
 	synchronized getProductCountForSearch(String text) {
 		def criteria = Product.createCriteria()
 		if(null == text)
 			return 0
 		List<Product> result = criteria.list(){
 			like('barcode', "%"+text.trim()+"%")
-			projections {
-				count()
-			}
+			projections { count() }
 		}
 		return result[0]
 	}
