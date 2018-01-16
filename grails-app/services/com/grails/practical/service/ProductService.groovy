@@ -7,7 +7,7 @@ import grails.transaction.Transactional
 
 @Transactional
 class ProductService {
-	private StrategyFactory strategyMapInstance = new StrategyFactory();
+	private StrategyFactory strategyFactory = new StrategyFactory();
 	def priceService
 
 	def getStandardStrategySet(){
@@ -30,14 +30,14 @@ class ProductService {
 		def strategySet = getDefaultStrategySet()
 		def map = new HashMap<String, BigDecimal>()
 		strategySet.each { strategy ->
-			map.put(strategy, strategyMapInstance.calculatePrice(priceService.getPriceList(barcode), strategy))
+			map.put(strategy, strategyFactory.calculatePrice(priceService.getPriceList(barcode), strategy))
 		}
 		return map
 	}
 
 
 	def calculateForStandardStrategy(String barcode,String strategy){
-		def price = strategyMapInstance.calculatePrice(priceService.getPriceList(barcode), strategy)
+		def price = strategyFactory.calculatePrice(priceService.getPriceList(barcode), strategy)
 		return price
 	}
 

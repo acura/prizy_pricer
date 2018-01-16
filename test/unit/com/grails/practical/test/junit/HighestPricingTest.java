@@ -1,4 +1,4 @@
-package com.grails.practical.junit;
+package com.grails.practical.test.junit;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class HighestPricingTest {
 		list.add(new BigDecimal(40.0));
 		list.add(new BigDecimal(50.0));
 		list.add(new BigDecimal(60.0));
-		priceCalculation = HighestPricingStrategy.INSTANCE;
+		priceCalculation = HighestPricingStrategy.HIGHEST;
 	}
 	
 	@Test

@@ -1,6 +1,6 @@
 
 
-package com.grails.practical.test
+package com.grails.practical.test.groovy
 
 import com.grails.practical.Price
 import com.grails.practical.Product;

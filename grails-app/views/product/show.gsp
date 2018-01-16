@@ -60,26 +60,27 @@
 		</ol>
 		
    
-
+	<g:if test="${priceCount}">
 		<div class="fieldcontain ${hasErrors(bean: productInstance, field: 'product', 'error')} required" style="margin-top: 0px;margin-left: 30px;">
 			<g:form controller="product">
 				<span id="strategylist" class="property-label" ><g:message code="price.calulationstrategy.label" default="Calculate Price:" /></span>
 				<span class="property-value" aria-labelledby="strategy-label">
 				<g:select  name="strategy" from="${standardStrategySet}"
 						onchange="${remoteFunction(action:'calculateForStandardStrategy',update:'subContainer', id:productInstance?.barcode, params:'\'strategy=\' + jQuery(this).val()')}"  noSelection="['Ideal':'Select Strategy']"/></span><br />
-				<div id="subContainer"  style="height:20px;margin-top: -40px;padding-left: 350px;"></div>
+				<div id="subContainer" style="height:20px;margin-top: -40px;padding-left: 350px;"></div>
 			</g:form>	
 		 </div>
+	</g:if>
+	
+	<g:if test="${priceCount}">
 		 <div class="fieldcontain ${hasErrors(bean: productInstance, field: 'product', 'error')} required" style="margin-top: 20px;margin-left: 30px;">
 			<g:form controller="product">
-				<span id="pricelist" class="property-label" ><g:message code="price.pricelist.label" default="Price List:" /></span>
-				<span class="property-value" aria-labelledby="strategy-label">
-				<g:select  name="price" from="${priceList}"/></span><br />
-				<div id="pricecount"  style="height:20px;margin-top: -43px;padding-left: 350px;">
+				<div id="pricecount" >
 				<span id="count" class="property-label" ><g:message code="price.pricecount.label" default="Price Count:" /></span>
 				<span class="property-value" aria-labelledby="strategy-label">${priceCount}</span></div>
 			</g:form>	
 		 </div>
+		 </g:if>
 		 </div>
 		 <div style="margin-left: 150px;margin-top: 25px;">
 		 	<g:link controller="price" action="create">Add Prices</g:link>

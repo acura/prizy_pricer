@@ -33,5 +33,4 @@ class Product implements Serializable{
 	public String toString() {
 		return "Product [barcode=" + barcode + ", productName=" + productName+ ", productDescription=" + productDescription + "]";
 	}
-
 }

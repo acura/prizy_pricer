@@ -3,8 +3,6 @@ package com.grails.pricecalculation.strategy.factory;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.grails.strategy.AveragePricingStrategy;
 import com.grails.strategy.HighestPricingStrategy;
 import com.grails.strategy.IdealPricingStrategy;
@@ -13,32 +11,31 @@ import com.grails.strategy.PriceCalculationStrategy;
 import com.grails.strategy.RetailPricingStrategy;
 import com.grails.strategy.SimplePricingStrategy;
 
-public class StrategyFactory{
-	
-	@Autowired
-	private PriceCalculationStrategy calculationStrategy;
+public class StrategyFactory {
 
 	public PriceCalculationStrategy getInstance(String strategy) {
+		PriceCalculationStrategy calculationStrategyInstance;
+
 		if (null == strategy)
 			return null;
 		else if ("Lowest".equals(strategy))
-			calculationStrategy = LowestPricingStrategy.INSTANCE;
+			calculationStrategyInstance = LowestPricingStrategy.LOWEST;
 		else if ("Average".equals(strategy))
-			calculationStrategy = AveragePricingStrategy.INSTANCE;
+			calculationStrategyInstance = AveragePricingStrategy.AVERAGE;
 		else if ("Highest".equals(strategy))
-			calculationStrategy = HighestPricingStrategy.INSTANCE;
+			calculationStrategyInstance = HighestPricingStrategy.HIGHEST;
 		else if ("Ideal".equals(strategy))
-			calculationStrategy = IdealPricingStrategy.INSTANCE;
+			calculationStrategyInstance = IdealPricingStrategy.IDEAL;
 		else if ("Simple".equals(strategy))
-			calculationStrategy = SimplePricingStrategy.INSTANCE;
+			calculationStrategyInstance = SimplePricingStrategy.SIMPLE;
 		else
-			calculationStrategy = RetailPricingStrategy.INSTANCE;
-		return calculationStrategy;
+			calculationStrategyInstance = RetailPricingStrategy.RETAIL;
+		return calculationStrategyInstance;
 	}
 
 	public BigDecimal calculatePrice(List<BigDecimal> priceList, String strategy) {
-		if(!priceList.isEmpty() && strategy != null)
-			return getInstance(strategy).calculatePrice(priceList);	
+		if (!priceList.isEmpty() && strategy != null)
+			return getInstance(strategy).calculatePrice(priceList);
 		return BigDecimal.ZERO;
 	}
 }

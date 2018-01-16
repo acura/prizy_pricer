@@ -1,4 +1,4 @@
-package com.grails.practical.junit;
+package com.grails.practical.test.junit;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,11 +8,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.grails.strategy.AveragePricingStrategy;
 import com.grails.strategy.PriceCalculationStrategy;
+import com.grails.strategy.RetailPricingStrategy;
 
-public class AveragePricingTest {
-
+public class RetailPricingTest {
 	List<BigDecimal>list;
 	private PriceCalculationStrategy priceCalculation;
 	@Before
@@ -24,21 +23,21 @@ public class AveragePricingTest {
 		list.add(new BigDecimal(40.0));
 		list.add(new BigDecimal(50.0));
 		list.add(new BigDecimal(60.0));
-		priceCalculation = AveragePricingStrategy.INSTANCE;
+		priceCalculation = RetailPricingStrategy.RETAIL;
 	}
 	
 	@Test
 	public void testForInstantiation(){
-		org.junit.Assert.assertTrue((priceCalculation.getClass().equals(AveragePricingStrategy.class)) == true);
+		org.junit.Assert.assertTrue((priceCalculation.getClass().equals(RetailPricingStrategy.class)) == true);
 	}
 
 	@Test
-	public void testAveragePriceCalculationStrategy() {
-		BigDecimal price1 = new BigDecimal(35.00);
+	public void testRetailPriceCalculationStrategy() {
+		BigDecimal price1 = new BigDecimal(64.00);
 		
-		BigDecimal price2 = new BigDecimal("35.00");
+		BigDecimal price2 = new BigDecimal("64.00");
 		
-		BigDecimal price3 = new BigDecimal(35.0);
+		BigDecimal price3 = new BigDecimal(64.0);
 		
 		org.junit.Assert.assertTrue(price1.compareTo(priceCalculation.calculatePrice(list)) == 0);
 		
@@ -64,5 +63,4 @@ public class AveragePricingTest {
 		
 		org.junit.Assert.assertTrue(BigDecimal.ZERO.compareTo(priceCalculation.calculatePrice(new ArrayList<BigDecimal>())) == 0);
 	}
-
 }

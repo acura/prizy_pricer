@@ -8,7 +8,7 @@ class Price implements Serializable {
 
 	BigDecimal price;
 	static belongsTo = [product:Product]
-	
+
 	static mapping = {
 		table 'price'
 		version:false
@@ -23,13 +23,13 @@ class Price implements Serializable {
 	public Price(BigDecimal price) {
 		this.price = price;
 	}
-	
+
 	public Price(BigDecimal price,Product product) {
 		this.price = price;
 		this.product = product;
 	}
-	
-	
+
+
 	@Override
 	public String toString() {
 		return price;

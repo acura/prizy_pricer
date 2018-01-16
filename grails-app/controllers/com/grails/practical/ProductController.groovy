@@ -65,25 +65,24 @@ class ProductController {
 	}
 
 	def calculateForDefaultStrategies(){
-		def map = productService.calculateForDefaultStrategies(params.id)
+		def map
+		if(getPriceCount() != 0)
+			map = productService.calculateForDefaultStrategies(params.id)
 	}
 
 	def calculateForStandardStrategy(){
 		def price = productService.calculateForStandardStrategy(params.id,params.strategy)
 
-		if(BigDecimal.ZERO.compareTo(price) == 0 && "Ideal".equals(params.strategy)) {
-			render {
-				div(id: "subContainer",style:"margin-top:-40px;",class:"message", "Provide minimum 5 prices to calculate ideal price")
-			}
-			return
-		}
-
 		if(getPriceCount() == 0){
-			render {
-				div(id: "subContainer",style:"margin-top:-40px;",class:"message", "Add some prices for price calculation")
-			}
-			return
+			price = message(code: 'custom.all.strategy.min.price.count')
 		}
+		else if(BigDecimal.ZERO.compareTo(price) == 0 && "Ideal".equals(params.strategy)) {
+			price = message(code: 'custom.ideal.strategy.min.price.count')
+		}
+		
+		if(price instanceof BigDecimal)
+			price = message(code: 'custom.amount.currency',args:[price])
+			
 		render(template: "/template/displayprices", collection:[key:params.strategy,value:price])
 	}
 
@@ -135,13 +134,10 @@ class ProductController {
 		params.max = Math.min(max ?: 10, 100)
 		def productList = Product.list()
 		int list_count
-		println params.id
-		println params.value
 		if(null !=params.id){
 			params.value=params.id
 			def searchString = params.value.toUpperCase()
 			productList=Product.findAllByBarcodeLike(searchString+'%', params)
-			println productList
 			list_count = productService.getProductCountForSearch(searchString)
 			render(template: "/template/list", model:[productInstanceList: productList,productInstanceCount1: list_count,value:params.value,search:params.id])
 		}else if ( "" == params.value || null ==  params.value) {

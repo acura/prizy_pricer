@@ -5,14 +5,16 @@ import java.math.RoundingMode;
 import java.util.List;
 
 public enum LowestPricingStrategy implements PriceCalculationStrategy{
-	INSTANCE;
+	LOWEST;
 	
 	@Override
-	public BigDecimal calculatePrice(List<BigDecimal> priceList) {
+	public BigDecimal calculatePrice(final List<BigDecimal> priceList) {
+		
 		if (priceList.isEmpty())
 			return BigDecimal.ZERO;
 
-		return priceList.stream()
+		return priceList
+				.stream()
 				.sorted()
 				.min((p1,p2) -> p1.compareTo(p2))
 				.get()

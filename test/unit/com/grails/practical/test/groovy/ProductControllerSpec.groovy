@@ -2,7 +2,7 @@
 
 
 
-package com.grails.practical.test
+package com.grails.practical.test.groovy
 
 import grails.test.mixin.TestFor;
 import groovy.transform.builder.Builder;
@@ -62,7 +62,7 @@ class ProductControllerSpec extends Specification{
 		model.productInstance!= null
 	}
 
-	void "Test the filter action serches the correct product"() {
+	void "Test the filter action searches the correct product"() {
 		
 		when:
 		params["id"] ="MTG"
