@@ -65,23 +65,18 @@ class ProductController {
 	}
 
 	def calculateForDefaultStrategies(){
-		def map
-		if(getPriceCount() != 0)
-			map = productService.calculateForDefaultStrategies(params.id)
+		def map = productService.calculateForDefaultStrategies(params.id)
 	}
 
 	def calculateForStandardStrategy(){
 		def price = productService.calculateForStandardStrategy(params.id,params.strategy)
-
-		if(getPriceCount() == 0){
-			price = message(code: 'custom.all.strategy.min.price.count')
-		}
-		else if(BigDecimal.ZERO.compareTo(price) == 0 && "Ideal".equals(params.strategy)) {
-			price = message(code: 'custom.ideal.strategy.min.price.count')
-		}
 		
-		if(price instanceof BigDecimal)
-			price = message(code: 'custom.amount.currency',args:[price])
+		if(params.strategy .equals("null")) 
+			price = "0"
+		else if(BigDecimal.ZERO.compareTo(price) == 0 && "Ideal".equals(params.strategy)) 
+			price = message(code: 'custom.ideal.strategy.min.price.count',args:[5])
+		else if(price instanceof BigDecimal)
+			price = message(code: 'default.amount.currency',args:[price])
 			
 		render(template: "/template/displayprices", collection:[key:params.strategy,value:price])
 	}

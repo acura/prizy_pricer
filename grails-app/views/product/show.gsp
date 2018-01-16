@@ -52,10 +52,14 @@
 				</li>
 				</g:if>
 	
-			<g:if test="${defaultStrategyMap}">
+			<g:if test="${priceCount}">
 				<li class="fieldcontain">
-						<g:render template="/template/displayprices" collection="${defaultStrategyMap}"/>
-				</li>
+				<g:each in="${defaultStrategyMap}" var="var">
+						<span class="property-label"><g:message code="price.label"	default="${var.key}:" /></span>
+						<span class="property-value" aria-labelledby="stratergy-label">	<g:message code="default.amount.currency" args="${var.value}" /></span>
+						<br />
+				</g:each>
+				 </li>
 			</g:if>
 		</ol>
 		
@@ -66,8 +70,8 @@
 				<span id="strategylist" class="property-label" ><g:message code="price.calulationstrategy.label" default="Calculate Price:" /></span>
 				<span class="property-value" aria-labelledby="strategy-label">
 				<g:select  name="strategy" from="${standardStrategySet}"
-						onchange="${remoteFunction(action:'calculateForStandardStrategy',update:'subContainer', id:productInstance?.barcode, params:'\'strategy=\' + jQuery(this).val()')}"  noSelection="['Ideal':'Select Strategy']"/></span><br />
-				<div id="subContainer" style="height:20px;margin-top: -40px;padding-left: 350px;"></div>
+						onchange="${remoteFunction(action:'calculateForStandardStrategy',update:'subContainer', id:productInstance?.barcode, params:'\'strategy=\' + jQuery(this).val()')}"  noSelection="${['null':'-Select Strategy-']}"/></span><br />
+				<div id="subContainer" style="height:20px;margin-top: -40px;padding-left: 350px;"><g:message/></div>
 			</g:form>	
 		 </div>
 	</g:if>
