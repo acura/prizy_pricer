@@ -32,6 +32,7 @@ class ProductControllerSpec extends Specification{
 	}
 
 	def setup(){
+		controller.metaClass.message = { it }
 		product = new Product("MTG20160417AND14","Moto G2","Octa Core, 1.6 GHz Processor 4 GB RAM, 32 GB inbuilt 3000 mAh Battery")
 		product.save flush:true
 		new Product("XXX20160417AND155","Moto G2","Octa Core, 1.6 GHz Processor 4 GB RAM, 32 GB inbuilt 3000 mAh Battery").save flush:true
@@ -122,7 +123,7 @@ class ProductControllerSpec extends Specification{
 
 		where:
 		id_value        	|  strategy  |   	amount
-		'MTG20160417AND147'	|  'Ideal'	 |      "Provide minimum 5 prices to calculate ideal price"
+		'MTG20160417AND147'	|  'Ideal'	 |      "custom.ideal.strategy.min.price.count"
 		'MTG20160417AND147'	|  'Retail'	 |      "3.00"
 		'MTG20160417AND147'	|  'Simple'	 |      "2.10"
 	}
@@ -168,9 +169,7 @@ class ProductControllerSpec extends Specification{
 
 		where:
 		id_value        	|  strategy  |   	amount
-		'MTG20160417AND149'	|  'Ideal'	 |      "Provide minimum 5 prices to calculate ideal price"
-		'MTG20160417AND149'	|  'Retail'	 |      "Add some prices for price calculation"
-		'MTG20160417AND149'	|  'Simple'	 |      "Add some prices for price calculation"
+		'MTG20160417AND149'	|  'Ideal'	 |      "custom.ideal.strategy.min.price.count"
 	}
 
 	@Unroll
