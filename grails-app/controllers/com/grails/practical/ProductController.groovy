@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.jbilling.prizy.practical.Product;
+
 import grails.converters.JSON
 import grails.transaction.Transactional
 

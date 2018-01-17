@@ -1,22 +1,11 @@
 
 package com.grails.practical.test.groovy
 
-import javax.validation.Constraint;
-
-import org.codehaus.groovy.grails.validation.ConstrainedProperty
-import org.junit.Before;
-
-import spock.lang.Specification
-import spock.lang.Unroll;
-
-import com.grails.practical.Product;
-import com.grails.practical.ProductController;
-
-import grails.test.mixin.TestFor;
-import grails.test.mixin.TestMixin
-import grails.test.mixin.gorm.Domain;
 import grails.test.mixin.support.GrailsUnitTestMixin
-import grails.util.Holders;
+import spock.lang.Specification
+import spock.lang.Unroll
+
+import com.jbilling.prizy.practical.Product
 
 
 /**

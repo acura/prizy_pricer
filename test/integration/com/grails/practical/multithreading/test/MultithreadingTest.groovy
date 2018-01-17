@@ -1,24 +1,16 @@
 
 package com.grails.practical.multithreading.test
 
-import org.junit.Test;
+import grails.test.mixin.Mock
+import grails.test.mixin.TestFor
+import grails.test.mixin.integration.Integration
+import grails.test.spock.IntegrationSpec
+import grails.transaction.Rollback
 
-import spock.lang.Specification;
-
-import com.grails.practical.Price;
-import com.grails.practical.Product;
-import com.grails.practical.service.PriceService;
-import com.grails.practical.service.ProductService;
-import com.sun.xml.internal.ws.wsdl.writer.document.Service;
-
-import grails.test.mixin.Mock;
-import grails.test.mixin.TestFor;
-import grails.test.mixin.TestMixin;
-import grails.test.mixin.integration.Integration;
-import grails.test.mixin.support.GrailsUnitTestMixin;
-import grails.test.spock.IntegrationSpec;
-import grails.transaction.Rollback;
-import groovy.mock.interceptor.MockFor;
+import com.grails.practical.service.PriceService
+import com.grails.practical.service.ProductService
+import com.jbilling.prizy.practical.Price
+import com.jbilling.prizy.practical.Product
 
 @Integration
 @Rollback

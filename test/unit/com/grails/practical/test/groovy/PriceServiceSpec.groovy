@@ -1,18 +1,14 @@
-
-
-package com.grails.practical.test.groovy
-
-import java.math.RoundingMode;
-
-import com.grails.practical.Price;
-import com.grails.practical.Product;
-import com.grails.practical.service.PriceService;
-import com.sun.xml.internal.ws.wsdl.writer.document.Service;
-
 import grails.test.mixin.TestFor;
-import grails.test.mixin.TestMixin
+import grails.test.mixin.TestMixin;
 import grails.test.mixin.support.GrailsUnitTestMixin
+
+import java.math.RoundingMode
+
 import spock.lang.Specification
+
+import com.grails.practical.service.PriceService
+import com.jbilling.prizy.practical.Price
+import com.jbilling.prizy.practical.Product
 
 /**
  * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions

@@ -1,25 +1,9 @@
 package com.grails.practical.service
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.hibernate.Session
-import org.hibernate.SessionFactory
-import org.hibernate.sql.Update;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.grails.practical.Price
-import com.grails.practical.Product
-import com.grails.pricecalculation.strategy.factory.StrategyFactory;
-import com.grails.strategy.PriceCalculationStrategy;
-import com.sun.org.apache.bcel.internal.generic.LSHL;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-
 import grails.transaction.Transactional
+
+import com.grails.pricecalculation.strategy.factory.StrategyFactory
+import com.jbilling.prizy.practical.Price
 
 @Transactional
 class PriceService{

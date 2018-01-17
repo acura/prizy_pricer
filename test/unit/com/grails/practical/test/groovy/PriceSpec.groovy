@@ -1,17 +1,13 @@
 
 package com.grails.practical.test.groovy
 
-import java.math.RoundingMode;
-import java.security.DomainCombiner;
-
-import spock.lang.Specification
-import spock.lang.Unroll;
-
-import com.grails.practical.Price;
-
 import grails.test.mixin.TestFor;
-import grails.test.mixin.TestMixin
+import grails.test.mixin.TestMixin;
 import grails.test.mixin.support.GrailsUnitTestMixin
+import spock.lang.Specification
+import spock.lang.Unroll
+
+import com.jbilling.prizy.practical.Price
 
 
 /**

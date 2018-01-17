@@ -5,6 +5,8 @@ import static org.springframework.http.HttpStatus.*
 import org.codehaus.groovy.grails.web.pages.AbstractGroovyPageBinding.BindingMapEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.jbilling.prizy.practical.Price;
+
 import grails.transaction.Transactional
 
 @Transactional

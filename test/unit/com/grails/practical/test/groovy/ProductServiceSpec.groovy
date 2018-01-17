@@ -2,16 +2,16 @@
 
 package com.grails.practical.test.groovy
 
-import com.grails.practical.Price
-import com.grails.practical.Product;
-import com.grails.practical.service.PriceService;
-import com.grails.practical.service.ProductService;
-
 import grails.test.mixin.TestFor;
-import grails.test.mixin.TestMixin
+import grails.test.mixin.TestMixin;
 import grails.test.mixin.support.GrailsUnitTestMixin
 import spock.lang.Specification
-import spock.lang.Unroll;
+import spock.lang.Unroll
+
+import com.grails.practical.service.PriceService
+import com.grails.practical.service.ProductService
+import com.jbilling.prizy.practical.Price
+import com.jbilling.prizy.practical.Product
 
 /**
  * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions

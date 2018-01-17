@@ -4,17 +4,15 @@
 
 package com.grails.practical.test.groovy
 
-import grails.test.mixin.TestFor;
-import groovy.transform.builder.Builder;
-
-import com.grails.practical.Price;
-import com.grails.practical.Product;
-import com.grails.practical.ProductController;
-import com.grails.practical.service.PriceService;
-import com.grails.practical.service.ProductService;
-
+import grails.test.mixin.TestFor
 import spock.lang.Specification
-import spock.lang.Unroll;
+import spock.lang.Unroll
+
+import com.grails.practical.ProductController
+import com.grails.practical.service.PriceService
+import com.grails.practical.service.ProductService
+import com.jbilling.prizy.practical.Price
+import com.jbilling.prizy.practical.Product
 
 @TestFor(ProductController)
 @grails.test.mixin.Mock([Product,ProductService,Price,PriceService])

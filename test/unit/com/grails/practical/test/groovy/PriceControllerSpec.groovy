@@ -1,12 +1,11 @@
 
 package com.grails.practical.test.groovy
 import grails.test.mixin.TestFor;
+import spock.lang.*
 
-import com.grails.practical.Price;
-import com.grails.practical.PriceController;
-import com.grails.practical.Product;
-
-import spock.lang.*;
+import com.grails.practical.PriceController
+import com.jbilling.prizy.practical.Price
+import com.jbilling.prizy.practical.Product
 
 @TestFor(PriceController)
 @grails.test.mixin.Mock([Price,Product])

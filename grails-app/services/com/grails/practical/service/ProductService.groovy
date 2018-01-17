@@ -1,9 +1,9 @@
 package com.grails.practical.service
 
-import com.grails.practical.Product
-import com.grails.pricecalculation.strategy.factory.StrategyFactory;
-
 import grails.transaction.Transactional
+
+import com.grails.pricecalculation.strategy.factory.StrategyFactory
+import com.jbilling.prizy.practical.Product
 
 @Transactional
 class ProductService {
