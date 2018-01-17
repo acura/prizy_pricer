@@ -1,20 +1,10 @@
 dataSource {
-    
-    dialect = "org.hibernate.dialect.MySQLDialect"
-    driverClassName = "com.mysql.jdbc.Driver"
-    username = "root"
-    password = "dipakkardel"
-    url = "jdbc:mysql://localhost:3306/prizy?createDatabaseIfNotExist=true"
-    
-
-    /*
-        Other database configuration settings. Do not change unless you know what you are doing!
-        See resources.groovy for additional configuration options
-    */
     pooled = true
-    configClass = GrailsAnnotationConfiguration.class
+    jmxExport = true
+    driverClassName = "org.postgresql.Driver"
+    username = "postgres"
+    password = "postgres"
 }
-
 hibernate {
     cache.use_second_level_cache = true
     cache.use_query_cache = false
@@ -28,20 +18,20 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "update" // one of 'create', 'create-drop','update'
-            url = "jdbc:mysql://localhost:3306/prizy?createDatabaseIfNotExist=true"
+            dbCreate = "create" // one of 'create', 'create-drop', 'update', 'validate', ''
+            url = "jdbc:postgresql://localhost/prizy?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true"
         }
     }
     test {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:mysql://localhost:3306/prizy?createDatabaseIfNotExist=true"
+            url = "jdbc:postgresql://localhost/prizy?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true"
         }
     }
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:mysql://localhost:3306/prizy?createDatabaseIfNotExist=true"
+            url = "jdbc:postgresql://localhost/prizy?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true"
             properties {
                // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation
                jmxEnabled = true
@@ -65,6 +55,3 @@ environments {
         }
     }
 }
-
-
-
