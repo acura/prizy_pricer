@@ -1,4 +1,4 @@
-package com.grails.strategy;
+package com.jbilling.prizypricer.strategy;
 
 import java.math.BigDecimal;
 import java.util.List;

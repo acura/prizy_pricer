@@ -1,41 +1,32 @@
-package com.grails.pricecalculation.strategy.factory;
+package com.jbilling.prizypricer.strategy.factory;
 
-import java.math.BigDecimal;
-import java.util.List;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.grails.strategy.AveragePricingStrategy;
-import com.grails.strategy.HighestPricingStrategy;
-import com.grails.strategy.IdealPricingStrategy;
-import com.grails.strategy.LowestPricingStrategy;
-import com.grails.strategy.PriceCalculationStrategy;
-import com.grails.strategy.RetailPricingStrategy;
-import com.grails.strategy.SimplePricingStrategy;
+import com.jbilling.prizypricer.strategy.AveragePricingStrategy;
+import com.jbilling.prizypricer.strategy.HighestPricingStrategy;
+import com.jbilling.prizypricer.strategy.IdealPricingStrategy;
+import com.jbilling.prizypricer.strategy.LowestPricingStrategy;
+import com.jbilling.prizypricer.strategy.PriceCalculationStrategy;
 
-public class StrategyFactory {
+public class StrategyFactory{
+	
+	private StrategyFactory() {}
 
-	public PriceCalculationStrategy getInstance(String strategy) {
-		PriceCalculationStrategy calculationStrategyInstance;
-
+	@SuppressWarnings("resource")
+	public static PriceCalculationStrategy getInstance(String strategy) {
+		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(StrategyBeanConfig.class);
 		if (null == strategy)
 			return null;
 		else if ("Lowest".equals(strategy))
-			calculationStrategyInstance = LowestPricingStrategy.LOWEST;
+			return applicationContext.getBean(LowestPricingStrategy.class);
 		else if ("Average".equals(strategy))
-			calculationStrategyInstance = AveragePricingStrategy.AVERAGE;
+			return applicationContext.getBean(AveragePricingStrategy.class);
 		else if ("Highest".equals(strategy))
-			calculationStrategyInstance = HighestPricingStrategy.HIGHEST;
+			return applicationContext.getBean(HighestPricingStrategy.class);
 		else if ("Ideal".equals(strategy))
-			calculationStrategyInstance = IdealPricingStrategy.IDEAL;
-		else if ("Simple".equals(strategy))
-			calculationStrategyInstance = SimplePricingStrategy.SIMPLE;
-		else
-			calculationStrategyInstance = RetailPricingStrategy.RETAIL;
-		return calculationStrategyInstance;
+			return applicationContext.getBean(IdealPricingStrategy.class);
+		return null;
 	}
 
-	public BigDecimal calculatePrice(List<BigDecimal> priceList, String strategy) {
-		if (!priceList.isEmpty() && strategy != null)
-			return getInstance(strategy).calculatePrice(priceList);
-		return BigDecimal.ZERO;
-	}
 }

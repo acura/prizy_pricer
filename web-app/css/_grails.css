@@ -25,13 +25,16 @@
 
 .areaSize{
 width: 40%;
+height: 40%;
 resize :both;
 max-height :300px;
 min-height :200px;
-max-height: 250px;
-min-height: 100px;
-max-width :300px;
-max-width: 250px;
+max-height :250px;
+min-height :100px;
+max-width  :300px;
+min-width  :250px;
+max-width  :150px;
+min-width  :100px;
 }
 
 .link{

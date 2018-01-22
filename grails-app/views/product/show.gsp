@@ -1,6 +1,5 @@
 
-<%@ page import="com.grails.practical.Product" %>
-
+<%@ page import="com.prizypricer.domain.Product" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -54,7 +53,7 @@
 	
 			<g:if test="${priceCount}">
 				<li class="fieldcontain">
-				<g:each in="${defaultStrategyMap}" var="var">
+				<g:each in="${priceMap}" var="var">
 						<span class="property-label"><g:message code="price.label"	default="${var.key}:" /></span>
 						<span class="property-value" aria-labelledby="stratergy-label">	<g:message code="default.amount.currency" args="${var.value}" /></span>
 						<br />
@@ -64,7 +63,7 @@
 		</ol>
 		
    
-	<g:if test="${priceCount}">
+	<%--<g:if test="${priceCount}">
 		<div class="fieldcontain ${hasErrors(bean: productInstance, field: 'product', 'error')} required" style="margin-top: 0px;margin-left: 30px;">
 			<g:form controller="product">
 				<span id="strategylist" class="property-label" ><g:message code="price.calulationstrategy.label" default="Calculate Price:" /></span>
@@ -76,7 +75,7 @@
 		 </div>
 	</g:if>
 	
-	<g:if test="${priceCount}">
+	--%><g:if test="${priceCount}">
 		 <div class="fieldcontain ${hasErrors(bean: productInstance, field: 'product', 'error')} required" style="margin-top: 20px;margin-left: 30px;">
 			<g:form controller="product">
 				<div id="pricecount" >

@@ -8,8 +8,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.grails.strategy.IdealPricingStrategy;
-import com.grails.strategy.PriceCalculationStrategy;
+import com.jbilling.prizypricer.strategy.IdealPricingStrategy;
+import com.jbilling.prizypricer.strategy.PriceCalculationStrategy;
 
 public class IdealPricingTest {
 

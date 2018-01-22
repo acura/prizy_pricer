@@ -1,4 +1,4 @@
-<%@ page import="com.grails.practical.Product"%>
+<%@ page import="com.prizypricer.domain.Product" %>
 <html>
 <head>
 <link rel="stylesheet" href="${resource(dir: 'css', file: '_grails.css')}" type="text/css"/>

@@ -9,8 +9,8 @@ import grails.transaction.Rollback
 
 import com.grails.practical.service.PriceService
 import com.grails.practical.service.ProductService
-import com.jbilling.prizy.practical.Price
-import com.jbilling.prizy.practical.Product
+import com.jbilling.prizypricer.domain.Price
+import com.jbilling.prizypricer.domain.Product
 
 @Integration
 @Rollback

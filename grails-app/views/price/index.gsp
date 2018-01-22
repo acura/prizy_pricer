@@ -1,5 +1,5 @@
 
-<%@ page import="com.grails.practical.Price" %>
+<%@ page import="com.prizypricer.domain.Price" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -36,18 +36,11 @@
 				</g:each>
 				</tbody>
 			</table>
-		<g:if test="${priceCount}">
-			<div class="filteredList">
-				<g:render template="/template/paginate"
-					collection="${priceCount }" />
-			</div>
-		</g:if>
-		<g:if test="${priceInstanceCount}">
-			<div class="filteredList">
-				<g:render template="/template/paginate"
-					collection="${priceInstanceCount }" />
-			</div>
-		</g:if>
+			
+		<div class="pagination" style="position: sticky;">
+			<g:paginate next="next" total="${priceInstanceCount}" />
+		</div>
+		
 	</div>
 	</body>
 </html>

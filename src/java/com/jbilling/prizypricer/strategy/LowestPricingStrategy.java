@@ -1,11 +1,10 @@
-package com.grails.strategy;
+package com.jbilling.prizypricer.strategy;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
-public enum LowestPricingStrategy implements PriceCalculationStrategy{
-	LOWEST;
+public class LowestPricingStrategy implements PriceCalculationStrategy{
 	
 	@Override
 	public BigDecimal calculatePrice(final List<BigDecimal> priceList) {
@@ -14,10 +13,10 @@ public enum LowestPricingStrategy implements PriceCalculationStrategy{
 			return BigDecimal.ZERO;
 
 		return priceList
-				.stream()
-				.sorted()
-				.min((p1,p2) -> p1.compareTo(p2))
-				.get()
-				.setScale(2, RoundingMode.HALF_UP);
+					  .stream()
+					  .filter(p -> p != null)
+					  .max((b1,b2) -> b1.compareTo(b2))
+					  .get()
+					  .setScale(2, RoundingMode.HALF_UP);
 	}
 }

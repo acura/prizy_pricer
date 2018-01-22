@@ -1,17 +1,11 @@
-package com.grails.practical
+package com.prizypricer.controller
 
 
 
 import static org.springframework.http.HttpStatus.*
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.jbilling.prizy.practical.Product;
-
-import grails.converters.JSON
 import grails.transaction.Transactional
+
+import com.prizypricer.domain.Product
 
 @Transactional
 class ProductController {
@@ -21,15 +15,13 @@ class ProductController {
 
 	def index(Integer max) {
 		params.max = Math.min(max ?: 10, 100)
-		respond Product.list(params),model:[productInstanceCount1: Product.count()]
+		respond Product.list(params),model:[productInstanceCount: Product.count()]
 	}
 
 	def show(Product productInstance) {
-		def defaultStrategyMap = calculateForDefaultStrategies()
-		def standardStrategySet = getStandardStrategySet()
 		def priceCount = getPriceCount()
-		def priceList = getListToDisplay()
-		respond productInstance, model:[defaultStrategyMap:defaultStrategyMap,standardStrategySet:standardStrategySet,priceCount:priceCount,priceList:priceList]
+		def priceMap = calculateIdealPrice()
+		respond productInstance, model:[priceMap:priceMap,priceCount:priceCount]
 	}
 
 	def create() {
@@ -62,33 +54,12 @@ class ProductController {
 		}
 	}
 
-	def getStandardStrategySet(){
-		def list = productService.getStandardStrategySet();
-	}
-
-	def calculateForDefaultStrategies(){
-		def map = productService.calculateForDefaultStrategies(params.id)
-	}
-
-	def calculateForStandardStrategy(){
-		def price = productService.calculateForStandardStrategy(params.id,params.strategy)
-		
-		if(params.strategy .equals("null")) 
-			price = "0"
-		else if(BigDecimal.ZERO.compareTo(price) == 0 && "Ideal".equals(params.strategy)) 
-			price = message(code: 'custom.ideal.strategy.min.price.count',args:[5])
-		else if(price instanceof BigDecimal)
-			price = message(code: 'default.amount.currency',args:[price])
-			
-		render(template: "/template/displayprices", collection:[key:params.strategy,value:price])
+	def calculateIdealPrice(){
+		def price = productService.calculateIdealPrice(params.id)
 	}
 
 	def getPriceCount(){
 		def count =  priceService.getPriceCount(params.id)
-	}
-
-	def getListToDisplay(){
-		def list = priceService.getPriceListTodisplay(params.id)
 	}
 
 	def delete(Product product) {
@@ -127,24 +98,30 @@ class ProductController {
 		}
 	}
 
-	def filter(Integer max){
+	def search(Integer max){
 		params.max = Math.min(max ?: 10, 100)
-		def productList = Product.list()
-		int list_count
-		if(null !=params.id){
-			params.value=params.id
-			def searchString = params.value.toUpperCase()
-			productList=Product.findAllByBarcodeLike(searchString+'%', params)
-			list_count = productService.getProductCountForSearch(searchString)
-			render(template: "/template/list", model:[productInstanceList: productList,productInstanceCount1: list_count,value:params.value,search:params.id])
-		}else if ( "" == params.value || null ==  params.value) {
+		def productList
+		def productCount
+		def searchText = params.value
+		
+		println "in search"
+
+		if(null !=searchText){
+			productList=Product.findAllByBarcodeLike(searchText +'%',params)
+			productCount = getProductCount(searchText)
+		}else{
 			productList = Product.list(params)
-			render(template: "/template/list", model: [productInstanceList: productList,productInstanceCount1: Product.count()])
-		}else if(null != params.value){
-			def searchString = params.value.toUpperCase()
-			productList=Product.findAllByBarcodeLike(searchString+'%', params)
-			list_count = productService.getProductCountForSearch(searchString)
-			render(template: "/template/list", model: [productInstanceList: productList,productInstanceCount1: list_count,value:params.value,search:params.id])
+			productCount = Product.count()
 		}
+		
+		render(template: "/template/list", model: [productInstanceList: productList,productInstanceCount: productCount,value:searchText])
+	}
+	
+	def getProductCount(String searchText) {
+		def productList = Product.createCriteria().list(){
+			like('barcode', "%"+searchText.trim()+"%")
+			projections { count() }
+		}
+		return productList[0]
 	}
 }

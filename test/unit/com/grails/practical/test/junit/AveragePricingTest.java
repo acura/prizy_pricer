@@ -8,8 +8,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.grails.strategy.AveragePricingStrategy;
-import com.grails.strategy.PriceCalculationStrategy;
+import com.jbilling.prizypricer.strategy.AveragePricingStrategy;
+import com.jbilling.prizypricer.strategy.PriceCalculationStrategy;
 
 public class AveragePricingTest {
 

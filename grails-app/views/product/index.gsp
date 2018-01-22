@@ -1,5 +1,5 @@
 
-<%@ page import="com.grails.practical.Product"%>
+<%@ page import="com.prizypricer.domain.Product" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,12 +31,9 @@
 		</h1>
 	</div>
 	<div>
-		<g:form controller='product' action='filter' align="right">
-			<g:link href="#" onclick="javascript:window.history.back();"
-				class="link" style="margin-right:290px;"> 
-					<< Previous page</g:link>
-		   				Search Barcode:<g:remoteField action="filter"
-				controller="Product" update="list-product" name="search"
+		<g:form align="right">
+		   				Search <g:remoteField action="search"
+				controller="Product" update="list" name="search"
 				placeholder="Serach By Barcode"/>
 		</g:form>
 	</div>

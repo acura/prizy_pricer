@@ -1,11 +1,12 @@
 
 package com.grails.practical.test.groovy
 
+import com.jbilling.prizypricer.domain.Product;
+
 import grails.test.mixin.support.GrailsUnitTestMixin
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import com.jbilling.prizy.practical.Product
 
 
 /**

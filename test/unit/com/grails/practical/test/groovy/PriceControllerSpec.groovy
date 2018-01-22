@@ -4,8 +4,8 @@ import grails.test.mixin.TestFor;
 import spock.lang.*
 
 import com.grails.practical.PriceController
-import com.jbilling.prizy.practical.Price
-import com.jbilling.prizy.practical.Product
+import com.jbilling.prizypricer.domain.Price
+import com.jbilling.prizypricer.domain.Product
 
 @TestFor(PriceController)
 @grails.test.mixin.Mock([Price,Product])

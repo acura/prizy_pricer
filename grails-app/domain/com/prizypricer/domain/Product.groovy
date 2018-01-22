@@ -1,4 +1,4 @@
-package com.jbilling.prizy.practical
+package com.prizypricer.domain
 
 import grails.validation.Validateable;
 import groovy.transform.EqualsAndHashCode;

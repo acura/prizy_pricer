@@ -10,8 +10,8 @@ import spock.lang.Unroll
 
 import com.grails.practical.service.PriceService
 import com.grails.practical.service.ProductService
-import com.jbilling.prizy.practical.Price
-import com.jbilling.prizy.practical.Product
+import com.jbilling.prizypricer.domain.Price;
+import com.jbilling.prizypricer.domain.Product;
 
 /**
  * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions

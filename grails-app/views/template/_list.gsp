@@ -3,11 +3,11 @@
 		<thead>
 			<tr style="width: 100%">
 
-				<util:remoteSortableColumn controller="Product" action="filter"
+				<util:remoteSortableColumn controller="Product" action="search"
 					update="list" property="barcode" id="${value}"
 					title="${message(code: 'product.barcode.label', default: 'Barcode')}" />
 
-				<util:remoteSortableColumn controller="Product" action="filter"
+				<util:remoteSortableColumn controller="Product" action="search"
 					update="list" property="productName" id="${value}"
 					title="${message(code: 'product.productname.label', default: 'Product Name')}" />
 
@@ -32,6 +32,6 @@
 	</table>
 </div>
 <div class="pagination">
-	<util:remotePaginate controller="Product" action="filter"
-		total="${productInstanceCount1 ?: 0}" id="${value}" update="list"></util:remotePaginate>
+	<util:remotePaginate controller="Product" action="search"
+		total="${productInstanceCount ?: 0}" id="${value}" update="list"></util:remotePaginate>
 </div>

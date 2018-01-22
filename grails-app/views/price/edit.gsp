@@ -1,4 +1,4 @@
-<%@ page import="com.grails.practical.Price" %>
+<%@ page import="com.prizypricer.domain.Price" %>
 <!DOCTYPE html>
 <html>
 	<head>

@@ -1,11 +1,10 @@
-package com.grails.strategy;
+package com.jbilling.prizypricer.strategy;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
-public enum AveragePricingStrategy implements PriceCalculationStrategy {
-	AVERAGE;
+public class AveragePricingStrategy implements PriceCalculationStrategy {
 
 	@Override
 	public BigDecimal calculatePrice(final List<BigDecimal> priceList) {
@@ -15,6 +14,7 @@ public enum AveragePricingStrategy implements PriceCalculationStrategy {
 
 		return priceList
 				.stream()
+				.filter(p -> p!= null)
 				.reduce(BigDecimal.ZERO, (b1, b2) -> b1.add(b2))
 				.divide(new BigDecimal(priceList.stream().count()), 2,RoundingMode.HALF_UP)
 				.setScale(2, RoundingMode.HALF_UP);

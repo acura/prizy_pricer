@@ -1,13 +1,11 @@
-package com.grails.practical
+package com.prizypricer.controller
 
 import static org.springframework.http.HttpStatus.*
-
-import org.codehaus.groovy.grails.web.pages.AbstractGroovyPageBinding.BindingMapEntry;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.jbilling.prizy.practical.Price;
-
+import grails.converters.JSON
 import grails.transaction.Transactional
+
+import com.prizypricer.domain.Price
+import com.prizypricer.domain.Product;
 
 @Transactional
 class PriceController {
@@ -24,7 +22,7 @@ class PriceController {
     }
 
     def create() {
-        respond new Price(params)
+        respond new Price(params),model:[productList: Product.list()]
     }
 
    
@@ -39,14 +37,6 @@ class PriceController {
             return
         }
 	
-		/*if(priceStrategyService.checkDuplicatePriceForSameProduct(priceInstance, params.product.id))
-		{
-			flash.error = "Product ${Product.get(params.product.id).productName} already has a price ${priceInstance.price}";
-			respond flash.error,view:'create'
-			return
-		}*/
-
-
         priceInstance.save flush:true
 
         request.withFormat {
@@ -57,6 +47,23 @@ class PriceController {
             '*' { respond priceInstance, [status: CREATED] }
         }
     }
+	
+	def search(Integer max){
+		params.max = Math.min(max ?: 10, 100)
+		def productList
+		def productCount
+		def searchText = params.value
+		
+		println "in search"
+
+		if(null !=searchText){
+			productList=Product.findAllByBarcodeLike(searchText +'%',params)
+		}else{
+			productList = Product.list(params)
+		}
+		
+		return productList as JSON
+	}
 
     def delete(Price priceInstance) {
 	
